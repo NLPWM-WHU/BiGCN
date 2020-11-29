@@ -3,10 +3,10 @@ We will release the code and data soon.
 Datasets:Twitter,Lap14,Rest14,Rest15,Rest16
 ## Requirements
 
-* Python 3.6
-* PyTorch 1.0.0
+* Python 3.7
+* PyTorch 1.1.0
 * SpaCy 2.0.18
-* numpy 1.15.4
+* numpy 1.16.2
 
 ## Usage
 

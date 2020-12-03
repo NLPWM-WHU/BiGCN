@@ -29,7 +29,7 @@ python train.py --model_name bigcn --dataset rest14 --save True
 ## Citation
 
 If you use the code in your paper, please kindly star this repo and cite our paper
-'''
+```
 @inproceedings{DBLP:conf/emnlp/ZhangQ20,
   author    = {Mi Zhang and
                Tieyun Qian},
@@ -45,8 +45,7 @@ If you use the code in your paper, please kindly star this repo and cite our pap
   biburl    = {https://dblp.org/rec/conf/emnlp/ZhangQ20.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
+```
 
-'''
-
-##
+## Note
 * Code of this repo heavily relies on [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch)

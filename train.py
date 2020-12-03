@@ -10,7 +10,7 @@ import torch.nn as nn
 from bucket_iterator import BucketIterator
 from sklearn import metrics
 from data_utils import ABSADatesetReader
-from models import LSTM, ASCNN, ASGCN,GCGCN,ASGAT,ASFRGCN,BiGCN
+from models import LSTM,BiGCN
 from get_position import Vocab_post
 import logging
 
@@ -91,7 +91,7 @@ class Instructor:
                     train_acc = n_correct / n_total
 
                     test_acc, test_f1 = self._evaluate_acc_f1()
-                    if test_acc > max_test_acc:#每个epoch中最大的
+                    if test_acc > max_test_acc:
                         max_test_acc = test_acc
                     if test_f1 > max_test_f1:
                         increase_flag = True

@@ -3,15 +3,10 @@
 Convolution over Hierarchical Syntactic and Lexical Graphs for Aspect Level Sentiment Analysis
 * Code and preprocessed dataset for [EMNLP 2020](https://2020.emnlp.org/papers/main) paper titled "[Convolution over Hierarchical Syntactic and Lexical Graphs for Aspect Level Sentiment Analysis](https://www.aclweb.org/anthology/2020.emnlp-main.286/)" 
 
-We will release the code and data soon.
-Datasets:Twitter,Lap14,Rest14,Rest15,Rest16
 ## Requirements
-@@ -19,3 +23,28 @@ and
 python -m spacy download en
 ```
 * Download pretrained GloVe embeddings with this [link](http://nlp.stanford.edu/data/wordvecs/glove.840B.300d.zip) and extract `glove.840B.300d.txt` into `glove/`.
-
-
 
 ## Citation
 

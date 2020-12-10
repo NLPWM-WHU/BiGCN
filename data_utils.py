@@ -14,7 +14,7 @@ def load_word_vec(path, word2idx=None):
         tokens = line.rstrip().split()
         if word2idx is None or tokens[0] in word2idx.keys():
             try:
-                word_vec[tokens[0]] = np.asarray(tokens[1:], dtype='float32') #word：300维向量
+                word_vec[tokens[0]] = np.asarray(tokens[1:], dtype='float32') 
             except:
                 continue
     return word_vec
@@ -34,7 +34,7 @@ def build_embedding_matrix(word2idx, embed_dim, type):
         word_vec = load_word_vec(fname, word2idx=word2idx)
         print('building embedding_matrix:', embedding_matrix_file_name)
         for word, i in word2idx.items():
-            vec = word_vec.get(word)#得到该word的vec
+            vec = word_vec.get(word)
             if vec is not None:
                 # words not found in embedding index will be all-zeros.
                 embedding_matrix[i] = vec
@@ -196,7 +196,6 @@ class ABSADatesetReader:
                 'fre_graph':fre_graph,
                 'dependency_graph_no': dependency_graph_no,
                 'fre_graph_no': fre_graph_no,
-                # 'adj_sen_graph':adj_sen_graph
                 'post_emb':post_emb
 
             }
@@ -238,13 +237,12 @@ class ABSADatesetReader:
                  tokenizer = Tokenizer(word2idx=word2idx)
         else:
             tokenizer = Tokenizer()
-            tokenizer.fit_on_text(text) #每个word一个id
+            tokenizer.fit_on_text(text) 
             with open(dataset+'_word2idx.pkl', 'wb') as f:
                  pickle.dump(tokenizer.word2idx, f)
         self.embedding_matrix = build_embedding_matrix(tokenizer.word2idx, embed_dim, dataset)
 
         fre_embedding = self.embedding_matrix
-        self.fre_embedding = torch.tensor(fre_embedding,dtype=torch.float)
         fin = open(fname[dataset]['train'] + 'fre_full_all' + '.graph', 'rb')
         common_adj = pickle.load(fin)
         len_1 = len(tokenizer.word2idx)
@@ -255,7 +253,7 @@ class ABSADatesetReader:
         cp_row = np.zeros((diff, row))
         common_adj = np.insert(common_adj,0,values=cp_row,axis=0)
 
-        cp_col = np.zeros((diff,len_1))#4585*2
+        cp_col = np.zeros((diff,len_1))
         common_adj = np.insert(common_adj,0,values=cp_col,axis=1)
 
         self.common_adj = torch.tensor(common_adj, dtype=torch.float)

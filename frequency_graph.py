@@ -18,12 +18,12 @@ class Coword_matrix(object):
             self.Common_matrix[i][i] = int(self.Full_Feature_weight[i])
             print(self.Common_matrix)
             for n in range(1, len(self.Full_Feature_word) - i):
-                #构建两个词之间的频率
+      
                 word1 = self.Full_Feature_word[i]
                 word2 = self.Full_Feature_word[i + n]
                 Common_weight = 0
                 for Single_Text_Cut in self.Fulltext_cut_content:
-                #遍历每一句话中的所有句子，如果word1和word2在同一片句子中出现，则该两词的权重+1
+           
                     if ((word1 in Single_Text_Cut) and (word2 in Single_Text_Cut)):
                         Common_weight += 1
                 self.Common_matrix[i][i + n] = Common_weight
@@ -50,23 +50,6 @@ def stopword():
         stop_words.append(w)
     return stop_words
 
-# def frequencu_adj_matrix(text,common_adj,stop_words):
-#     seq_len = len(text.split())
-#     matrix = np.zeros((seq_len, seq_len)).astype('float32')
-#     for i in range(seq_len-1):
-#         word1 = text[i]
-#         word2 = text[i+1]
-#
-#         print()
-#         #如果word是stopwords的话，其和其他词的值就为0   剩下的值为该两个词出现的频率
-#
-#
-#
-#
-#
-#
-#     print()
-
 def process(filename):
     fin = open(filename, 'r', encoding='utf-8', newline='\n', errors='ignore')
     lines = fin.readlines()
@@ -83,19 +66,12 @@ def process(filename):
         sentence = text_left+' '+aspect+' '+text_right
         re_sentence.append(sentence)
         sentence = [s for s in sentence.split() if s not in stop_words]
-        all_sentence.append(sentence) #所有的句子存储在all_sentence中
-        Single_text_feature_sort_dict = collections.Counter(sentence)  # 词频统计
+        all_sentence.append(sentence) 
+        Single_text_feature_sort_dict = collections.Counter(sentence) 
 
         Full_familiar_Feature = dict(Counter(dict(Single_text_feature_sort_dict)) + Counter(
             dict(Full_familiar_Feature)))
     Full_Feature_word, Full_Feature_weight = list(Full_familiar_Feature.keys()), list( Full_familiar_Feature.values())
-
-        # adj_matrix = frequencu_adj_matrix(text_left+' '+aspect+' '+text_right) #得到词汇共现矩阵
-        # idx2graph[i] = adj_matrix
-    # co_words = Coword_matrix(all_sentence,Full_Feature_word, Full_Feature_weight)
-    # common_adj = co_words.get_Common_matrix()
-
-
     return Full_Feature_word
 
 #Get the small word frequency map of each instance according to the stored global word frequency map
@@ -104,40 +80,40 @@ def process_single(fname):
     lines = fin.readlines()
     fin.close()
 
-    fin = open(fname + 'fre' + '.graph', 'rb')  # 使用之前构造的全部词频矩阵
+    fin = open(fname + 'fre' + '.graph', 'rb') 
     common_adj = pickle.load(fin)
     fin.close()
     idx2graph = {}
     stop_words = stopword()
-    all_sentence = []#只有特征词的句子
-    re_sentence = []#原始句子
+    all_sentence = []
+    re_sentence = []
     Full_familiar_Feature = {}
-    for i in range(0, len(lines), 3):#所有的句子
-        text_left, _, text_right = [s.lower().strip() for s in lines[i].partition("$T$") ] #去除停用词和标点
+    for i in range(0, len(lines), 3):
+        text_left, _, text_right = [s.lower().strip() for s in lines[i].partition("$T$") ] 
         aspect = lines[i + 1].lower().strip()
         sentence = text_left+' '+aspect+' '+text_right
-        re_sentence.append(sentence) #原始句子
+        re_sentence.append(sentence) 
         sentence = [s for s in sentence.split() if s not in stop_words]
         all_sentence.append(sentence)
-        Single_text_feature_sort_dict = collections.Counter(sentence)  # 词频统计
-        Full_familiar_Feature = dict(Counter(dict(Single_text_feature_sort_dict)) + Counter(dict(Full_familiar_Feature)))  # 化为Counter后 作并集，再将结果化为dict
+        Single_text_feature_sort_dict = collections.Counter(sentence)  
+        Full_familiar_Feature = dict(Counter(dict(Single_text_feature_sort_dict)) + Counter(dict(Full_familiar_Feature)))  
 
-    Full_Feature_word= list(Full_familiar_Feature.keys()) #所有的特征词
+    Full_Feature_word= list(Full_familiar_Feature.keys()) 
     feat_dic = {}
     for i in range(len(Full_Feature_word)):
-        feat_dic[Full_Feature_word[i]] = i #key：单词 value：位置
-    #所有的特征词在Full_Feature_word中
-    for i in range(len(re_sentence)):  # 得到所有的句子
-        sentence = re_sentence[i] #对每一个句子
+        feat_dic[Full_Feature_word[i]] = i 
+   
+    for i in range(len(re_sentence)): 
+        sentence = re_sentence[i] 
         sentence_split = sentence.split()
-        seq_len = len(sentence_split) #一个句子中所有的单词
-        adj_matrix = np.zeros((seq_len, seq_len)).astype('float32') #构建词典
+        seq_len = len(sentence_split) 
+        adj_matrix = np.zeros((seq_len, seq_len)).astype('float32') 
         for j in range(seq_len - 1):
-            #对每个单词
+       
             word1 = sentence_split[j]
             if word1 in feat_dic.keys():
-                 index1 = feat_dic.get(word1)#得到当前位置
-                 adj_matrix[j][j] = common_adj[index1][index1] #对角线位置为该单词出现频率
+                 index1 = feat_dic.get(word1)
+                 adj_matrix[j][j] = common_adj[index1][index1] 
                  for k in range(j + 1, seq_len):
                     word2 = sentence_split[k]
                     if word2 in feat_dic.keys():
@@ -145,10 +121,8 @@ def process_single(fname):
                         adj_matrix[j][k] = common_adj[index1][index2]
                         adj_matrix[k][j] = common_adj[index1][index2]
             else:
-                adj_matrix[j] = 0.5 #停用词啥的
+                adj_matrix[j] = 0.5 
                 adj_matrix[:,j] = 0.5
-
-        # adj_matrix  = single_graph(sentence,common_adj,stop_words)
         idx2graph[i] = adj_matrix
     fout = open(fname + 'single'+'.graph', 'wb')
     pickle.dump(idx2graph, fout)
@@ -156,68 +130,63 @@ def process_single(fname):
 
 
 def process_single_test(fname):
-    #!添加！为了处理测试集
     test_file = fname + 'test.raw'
     fin = open(test_file, 'r', encoding='utf-8', newline='\n', errors='ignore')
     lines = fin.readlines()
     fin.close()
     train_file = fname +'train.raw'
-    fin = open(train_file + 'fre' + '.graph', 'rb')  # 使用之前训练集构造的全部词频矩阵
+    fin = open(train_file + 'fre' + '.graph', 'rb')  
     common_adj = pickle.load(fin)
     fin.close()
     idx2graph = {}
     stop_words = stopword()
-    all_sentence = []#只有特征词的句子
-    re_sentence = []#原始句子
+    all_sentence = []
+    re_sentence = []
     Full_familiar_Feature = {}
-    for i in range(0, len(lines), 3):#所有的句子
-        text_left, _, text_right = [s.lower().strip() for s in lines[i].partition("$T$") ] #去除停用词和标点
+    for i in range(0, len(lines), 3):
+        text_left, _, text_right = [s.lower().strip() for s in lines[i].partition("$T$") ] 
         aspect = lines[i + 1].lower().strip()
         sentence = text_left+' '+aspect+' '+text_right
-        re_sentence.append(sentence) #原始句子
+        re_sentence.append(sentence) 
         sentence = [s for s in sentence.split() if s not in stop_words]
         all_sentence.append(sentence)
-        Single_text_feature_sort_dict = collections.Counter(sentence)  # 词频统计
-        Full_familiar_Feature = dict(Counter(dict(Single_text_feature_sort_dict)) + Counter(dict(Full_familiar_Feature)))  # 化为Counter后 作并集，再将结果化为dict
+        Single_text_feature_sort_dict = collections.Counter(sentence)  
+        Full_familiar_Feature = dict(Counter(dict(Single_text_feature_sort_dict)) + Counter(dict(Full_familiar_Feature)))  
 
-    Full_Feature_word= list(Full_familiar_Feature.keys()) #所有的特征词
+    Full_Feature_word= list(Full_familiar_Feature.keys()) 
     feat_dic = {}
     for i in range(len(Full_Feature_word)):
-        feat_dic[Full_Feature_word[i]] = i #key：单词 value：位置
-    #所有的特征词在Full_Feature_word中
-    for i in range(len(re_sentence)):  # 得到所有的句子
-        sentence = re_sentence[i] #对每一个句子
+        feat_dic[Full_Feature_word[i]] = i
+    for i in range(len(re_sentence)): 
+        sentence = re_sentence[i] 
         sentence_split = sentence.split()
-        seq_len = len(sentence_split) #一个句子中所有的单词
-        adj_matrix = np.zeros((seq_len, seq_len)).astype('float32') #构建词典
+        seq_len = len(sentence_split)
+        adj_matrix = np.zeros((seq_len, seq_len)).astype('float32') 
         for j in range(seq_len - 1):
-            #对每个单词
+           
             word1 = sentence_split[j]
             if word1 in feat_dic.keys():
-                 index1 = feat_dic.get(word1)#得到当前位置
-                 adj_matrix[j][j] = common_adj[index1][index1] #对角线位置为该单词出现频率
+                 index1 = feat_dic.get(word1)
+                 adj_matrix[j][j] = common_adj[index1][index1] 
                  for k in range(j + 1, seq_len):
                     word2 = sentence_split[k]
                     if word2 in feat_dic.keys():
                         index2 = feat_dic.get(word2)
                         adj_matrix[j][k] = common_adj[index1][index2]
                         adj_matrix[k][j] = common_adj[index1][index2]
-                    else:#若测试集中词未在训练集出现过，则直接设置为0
+                    else:
                         adj_matrix[j][k] = 0.5
                         adj_matrix[k][j] = 0.5
 
             else:
-                adj_matrix[j] = 0.5 #停用词啥的
+                adj_matrix[j] = 0.5 
                 adj_matrix[:,j] = 0.5
 
-        # adj_matrix  = single_graph(sentence,common_adj,stop_words)
+       
         idx2graph[i] = adj_matrix #i是每个句子
     fout = open(test_file + 'single'+'.graph', 'wb')
     pickle.dump(idx2graph, fout)
     fout.close()
-
-#根据每个instance的小词频图，把它们进行分层
-#一共分为8类
 
 def process_single_hira(fname):
     f1 = [1]
@@ -228,16 +197,16 @@ def process_single_hira(fname):
     f6 = list(range(17, 33))
     f7 = list(range(33, 65))
     fin = open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
-    lines = fin.readlines()#先得到数据集所有的instance 为了得到行数
+    lines = fin.readlines()
     fin.close()
-    # 句法依赖图
+
     fin = open(fname+'single.graph', 'rb')
     fre_graphs = pickle.load(fin)
     fin.close()
     idx2graph = {}
     for i in range(0, len(lines), 3):
-        #对每句话，重新构造分层的词频图
-        fre_graph = fre_graphs[i / 3] #注意这里
+
+        fre_graph = fre_graphs[i / 3] 
 
         seq_len = fre_graph.shape[0]
         matrix1 = np.zeros((seq_len, seq_len)).astype('float32')
@@ -248,8 +217,6 @@ def process_single_hira(fname):
         matrix6 = np.zeros((seq_len, seq_len)).astype('float32')
         matrix7 = np.zeros((seq_len, seq_len)).astype('float32')
         matrix8 = np.zeros((seq_len, seq_len)).astype('float32')
-        #这样每个句子会有8个图；按照词频划分的
-        #他的值就是原来的值
         for j in range(seq_len):
             matrix1[j][j] = 1
             matrix2[j][j] = 1

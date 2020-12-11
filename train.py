@@ -91,7 +91,7 @@ class Instructor:
                     train_acc = n_correct / n_total
 
                     test_acc, test_f1 = self._evaluate_acc_f1()
-                    if test_acc > max_test_acc:
+                    if test_acc > max_test_acc:#每个epoch中最大的
                         max_test_acc = test_acc
                     if test_f1 > max_test_f1:
                         increase_flag = True
@@ -103,11 +103,11 @@ class Instructor:
                     print('loss: {:.4f}, acc: {:.4f}, test_acc: {:.4f}, test_f1: {:.4f}'.format(loss.item(), train_acc, test_acc, test_f1))
             if increase_flag == False:
                 continue_not_increase += 1
-                if continue_not_increase >= 5:
+                if continue_not_increase >= 20:
                     print('early stop.')
                     break
             else:
-                continue_not_increase = 0    
+                continue_not_increase = 0
         return max_test_acc, max_test_f1
 
     def _evaluate_acc_f1(self):
@@ -149,6 +149,8 @@ class Instructor:
 
         max_test_acc_avg = 0
         max_test_f1_avg = 0
+        max_test_acc_true = 0
+        max_test_f1_true = 0
         for i in range(repeats):
             print('repeat: ', (i+1))
             f_out.write('repeat: '+str(i+1))
@@ -156,11 +158,18 @@ class Instructor:
             max_test_acc, max_test_f1 = self._train(criterion, optimizer)
             print('max_test_acc: {0}     max_test_f1: {1}'.format(max_test_acc, max_test_f1))
             f_out.write('max_test_acc: {0}, max_test_f1: {1}'.format(max_test_acc, max_test_f1))
+            if max_test_acc >  max_test_acc_true:
+                max_test_acc_true = max_test_acc
+            if max_test_f1 > max_test_f1_true:
+                max_test_f1_true = max_test_f1
+
             max_test_acc_avg += max_test_acc
             max_test_f1_avg += max_test_f1
             print('#' * 100)
         print("max_test_acc_avg:", max_test_acc_avg / repeats)
         print("max_test_f1_avg:", max_test_f1_avg / repeats)
+        print("max_test_acc_temp:", max_test_acc_true)
+        print("max_test_f1_temp:", max_test_f1_true)
 
         f_out.close()
 
@@ -181,9 +190,9 @@ if __name__ == '__main__':
     parser.add_argument('--log_step', default=5, type=int)
     parser.add_argument('--embed_dim', default=300, type=int)
     parser.add_argument('--post_dim', default=30, type=int)
-    parser.add_argument('--hidden_dim', default=320, type=int)
+    parser.add_argument('--hidden_dim', default=300, type=int)
     parser.add_argument('--polarities_dim', default=3, type=int)
-    parser.add_argument('--save', default=False, type=bool)
+    parser.add_argument('--save', default=True, type=bool)
     parser.add_argument('--seed', default=776, type=int)
     parser.add_argument('--device', default=None, type=str)
     parser.add_argument('--dropout', type=float, default=0.6, help='Dropout rate (1 - keep probability).')

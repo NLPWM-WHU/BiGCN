@@ -23,7 +23,7 @@ python -m spacy download en
 * Download pretrained GloVe embeddings with this [link](http://nlp.stanford.edu/data/wordvecs/glove.840B.300d.zip) and extract `glove.840B.300d.txt` into `glove/`.
 * Train with command, optional arguments could be found in [train.py](/train.py)
 ```bash
-python train.py --model_name bigcn --dataset rest14 --save True
+python train.py --dataset rest16 --vocab_dir datasets/semeval16/rest16_ --save True
 ```
 
 ## Citation

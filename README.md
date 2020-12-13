@@ -47,4 +47,4 @@ If you use the code in your paper, please kindly star this repo and cite our pap
 ```
 
 ## Note
-* Code of this repo heavily relies on [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch)
+* Code of this repo heavily relies on [ABSA-PyTorch](https://github.com/songyouwei/ABSA-PyTorch) and [ASGCN](https://github.com/GeneZC/ASGCN)

@@ -1,5 +1,4 @@
 # BiGCN
-Model code will be released soon.
 Convolution over Hierarchical Syntactic and Lexical Graphs for Aspect Level Sentiment Analysis
 * Code and preprocessed dataset for [EMNLP 2020](https://2020.emnlp.org/papers/main) paper titled "[Convolution over Hierarchical Syntactic and Lexical Graphs for Aspect Level Sentiment Analysis](https://www.aclweb.org/anthology/2020.emnlp-main.286/)" 
 

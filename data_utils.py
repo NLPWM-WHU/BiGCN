@@ -243,6 +243,7 @@ class ABSADatesetReader:
         self.embedding_matrix = build_embedding_matrix(tokenizer.word2idx, embed_dim, dataset)
 
         fre_embedding = self.embedding_matrix
+        self.fre_embedding = torch.tensor(fre_embedding,dtype=torch.float)
         fin = open(fname[dataset]['train'] + 'fre_full_all' + '.graph', 'rb')
         common_adj = pickle.load(fin)
         len_1 = len(tokenizer.word2idx)

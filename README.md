@@ -9,15 +9,6 @@ Convolution over Hierarchical Syntactic and Lexical Graphs for Aspect Level Sent
 * numpy 1.16.2
 
 ## Usage
-* Install [SpaCy](https://spacy.io/) package and language models with
-```bash
-pip install spacy
-```
-
-and
-```bash
-python -m spacy download en
-```
 
 * Download pretrained GloVe embeddings with this [link](http://nlp.stanford.edu/data/wordvecs/glove.840B.300d.zip) and extract `glove.840B.300d.txt` into `glove/`.
 * Train with command, optional arguments could be found in [train.py](/train.py)
